@@ -2,24 +2,14 @@ package tobyspring.helloboot;
 
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.server.WebServer;
-import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
-@Configuration // 스프링 컨테이너에게 이 클래스가 설정 정보를 포함하고 있음을 알려줌
-// 팩토리 메소드가 있는 것을 알려줌
+@Configuration
+@ComponentScan // 하위 패키지를 전부 스캔
 public class HellobootApplication {
-    // bean annotation을 붙이면 클래
-    @Bean
-    public HelloController helloController(HelloService helloService) {
-        return new HelloController(helloService);
-    }
-    @Bean
-    public HelloService helloService() {
-        return new SimpleHelloService();
-    }
-
     public static void main(String[] args) {
         // Jetty나 undertow 같은 서블릿 컨테이너 사용 가능
         //        new JettyServletWebServerFactory()
