@@ -43,6 +43,7 @@ public class HellobootApplication {
 
         GenericApplicationContext applicationContext = new GenericApplicationContext();
         applicationContext.registerBean(HelloController.class);
+        applicationContext.registerBean(SimpleHelloService.class);
         applicationContext.refresh();
 
         WebServer webServer = factory.getWebServer(servletContext -> {
