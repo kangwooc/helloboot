@@ -29,22 +29,28 @@ public class HellobootApplication {
 //            }).addMapping("/hello");
 //        });
 
-        GenericWebApplicationContext applicationContext = new GenericWebApplicationContext();
+        GenericWebApplicationContext applicationContext = new GenericWebApplicationContext() {
+            @Override
+            protected void onRefresh() {
+                super.onRefresh();
+                // 스프링 컨테이너로의 이전
+                WebServer webServer = factory.getWebServer(servletContext -> {
+                    // 서블릿 등록
+                    // 익명 클래스 등록
+                    // DispatcherServlet 등록
+                    // 이 상태에서는 DispatcherServlet이 동작하지 않는다
+                    // 매핑정보가 들어있지 않기 때문!
+                    servletContext.addServlet("dispatcherServlet",
+                            new DispatcherServlet(this)
+                    ).addMapping("/*");
+                });
+                webServer.start();
+            }
+
+        };
         applicationContext.registerBean(HelloController.class);
         applicationContext.registerBean(SimpleHelloService.class);
         applicationContext.refresh();
-
-        WebServer webServer = factory.getWebServer(servletContext -> {
-            // 서블릿 등록
-            // 익명 클래스 등록
-            // DispatcherServlet 등록
-            // 이 상태에서는 DispatcherServlet이 동작하지 않는다
-            // 매핑정보가 들어있지 않기 때문!
-            servletContext.addServlet("dispatcherServlet",
-                    new DispatcherServlet(applicationContext)
-            ).addMapping("/*");
-        });
-        webServer.start();
 
         // 서블릿 등록
 
