@@ -17,7 +17,7 @@ public class HelloController {
     // final로 저장은 안되는것이 setter로 주입이 되기 때문에
     private ApplicationContext applicationContext;
 
-    public HelloController(HelloService simpleHelloService, ApplicationContext applicationContext) {
+    public HelloController(HelloService simpleHelloService) {
         this.simpleHelloService = simpleHelloService;
         this.applicationContext = applicationContext;
     }
@@ -27,7 +27,10 @@ public class HelloController {
     @ResponseBody
     public String hello(String name) {
         // null 체크
-        return simpleHelloService.sayHello(Objects.requireNonNull(name));
+        if (name == null || name.isEmpty()) {
+            throw new IllegalArgumentException();
+        }
+        return simpleHelloService.sayHello(name);
     }
 
 //    @Override
