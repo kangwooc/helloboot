@@ -9,6 +9,8 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-@Configuration
+// proxyBeanMethods를 false로 만든다는 것??
+//
+@Configuration(proxyBeanMethods = false)
 public @interface MyAutoConfiguration {
 }
